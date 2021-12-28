@@ -8,6 +8,7 @@ on:
 env:
   DOTNET_VERSION: '6.0.x' # The .NET SDK version to use
   PROJECT: 'WebsiteValidator/WebsiteValidator.csproj' # the project to publish
+  RELEASEPREFIX: 'website-validator'
 
 jobs:
   build:
@@ -16,20 +17,23 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macOS-latest]
+        os: [ubuntu-latest, windows-latest, macOS-latest, linux-arm]
         include:
         - os: macos-latest
           RUNTIMEID: osx-x64
-          OUTPUTDIR: website-validator-osx-x64
+          OUTPUTDIR: ${{ env.PROJECT }}-osx-x64
 
         - os: ubuntu-latest
           RUNTIMEID: linux-x64
-          OUTPUTDIR: website-validator-linux-x64
+          OUTPUTDIR: ${{ env.PROJECT }}-linux-x64
 
         - os: windows-latest
           RUNTIMEID: win-x64
-          OUTPUTDIR: website-validator-win-x64
-
+          OUTPUTDIR: ${{ env.PROJECT }}-win-x64
+        
+        - os: linux-arm
+          RUNTIMEID: linux-arm
+          OUTPUTDIR: ${{ env.PROJECT }}-linux-arm
 
     steps:
     - uses: actions/checkout@v2
